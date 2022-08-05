@@ -25,6 +25,14 @@ on:
         - "no"
         - "beta"
         - "alpha"
+      cGithubPublish:
+        type: choice 
+        required: true
+        description: Require publish to github registry?
+        default: "yes"
+        options:
+        - "no"
+        - "yes"
       cNpmPublish:
         type: choice 
         required: true
@@ -76,9 +84,22 @@ jobs:
           [[ "$VERSION_CHANGE" = "major" ]] && [[ "$RELEASE_VARIANT" != "no" ]] && yarn version --premajor --preid $RELEASE_VARIANT
           [[ "$VERSION_CHANGE" = "major" ]] && [[ "$RELEASE_VARIANT" = "no" ]] && yarn version --major
           git add './'
-      - name: publish package
+      - name: publish to registry(github)
+        if: github.event.inputs.cGithubPublish == 'yes'
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          echo "always-auth = true" >> .npmrc
+          yarn publish --registry=https://npm.pkg.github.com/
+      - name: publish to registry(npmjs.com)
         if: github.event.inputs.cNpmPublish == 'yes'
-        run: npm publish --verbose
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          echo "always-auth = true" >> .npmrc
+          yarn publish --registry=https://registry.npmjs.org/
       - name: Push to github
         run: |
           git status
