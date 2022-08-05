@@ -49,7 +49,7 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     environment:
-      name: sit
+      name: production
     steps:
       - uses: actions/checkout@v2
       - name: Generate .npmrc
