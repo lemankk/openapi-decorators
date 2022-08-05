@@ -1,0 +1,64 @@
+{
+  "name": "@openapi-schemas/dynamoose-decorators",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Dynamoose decorators for operating with class-validator-jsonschema",
+  "main": "./dist/cjs/index",
+  "module": "./dist/esm/index",
+  "types": "./dist/types/index",
+  "files": [
+    "dist/*",
+    "index.js",
+    "index.esm.js",
+    "index.d.ts",
+    "spec.js",
+    "spec.d.ts"
+  ],
+  "scripts": {
+    "lint": "eslint ./src --ext .ts",
+    "compile": "rollup -c",
+    "prettier": "npx prettier --write ./src",
+    "build": "npm-run-all prettier compile",
+    "build:dev": "rollup -c --environment build:dev"
+  },
+  "peerDependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "class-validator-jsonschema": "^3.1.0",
+    "dynamoose": "^2.8.5",
+    "reflect-metadata": "^0.1.13"
+  },
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "class-validator-jsonschema": "^3.1.0",
+    "dynamoose": "^2.8.5",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@types/babel__core": "^7.1.16",
+    "@types/babel__preset-env": "^7.9.2",
+    "@types/jest": "^28.0.0",
+    "autoprefixer": "^10.3.1",
+    "babel-jest": "^28.0.0",
+    "babel-loader": "^8.1.0",
+    "class-transformer": "^0.5.1",
+    "jest": "^28.0.0",
+    "jest-junit": "^12.2.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "rollup": "^2.56.1",
+    "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "ts-jest": "^28.0.0",
+    "tslib": "^2.3.0",
+    "typedoc": "^0.22.15",
+    "typescript": "^4.0.0"
+  }
+}

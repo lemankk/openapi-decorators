@@ -1,0 +1,86 @@
+name: LIB - openapi-decorators
+concurrency:
+  group: 'lib-openapi-decorators-cicd'
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    inputs:
+      cbVersionChange:
+        type: choice 
+        required: true
+        description: The type of version change
+        default: "prerelease"
+        options:
+        - "no"
+        - "prerelease"
+        - "patch"
+        - "minor"
+        - "major"
+      cbVersionReleaseVariant:
+        type: choice 
+        required: true
+        description: Release variant
+        default: "alpha"
+        options:
+        - "no"
+        - "beta"
+        - "alpha"
+      cNpmPublish:
+        type: choice 
+        required: true
+        description: Require publish to npm registry?
+        default: "yes"
+        options:
+        - "no"
+        - "yes"
+defaults:
+  run:
+    working-directory: packages/openapi-decorators
+permissions: write-all
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    environment:
+      name: sit
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup git
+        run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: build package
+        run: |
+          node -v
+          npm -v
+          npm install
+          yarn build
+          git add .
+          git diff-index --quiet HEAD || git commit -m 'chore: update after build'
+          echo 'Completed'
+      - name: version release
+        if: github.event.inputs.cbVersionChange != 'no'
+        env:
+          VERSION_CHANGE: ${{ github.event.inputs.cbVersionChange }}
+          RELEASE_VARIANT: ${{ github.event.inputs.cbVersionReleaseVariant }}
+        run: |
+          echo "Trying to release patch with version change=$VERSION_CHANGE variant=$RELEASE_VARIANT"
+          [[ "$VERSION_CHANGE" = "prerelease" ]] && [[ "$RELEASE_VARIANT" != "no" ]] && yarn version --prerelease --preid $RELEASE_VARIANT
+          [[ "$VERSION_CHANGE" = "prerelease" ]] && [[ "$RELEASE_VARIANT" = "no" ]] && yarn version --prerelease
+          [[ "$VERSION_CHANGE" = "patch" ]] && [[ "$RELEASE_VARIANT" != "no" ]] && yarn version --prepatch --preid $RELEASE_VARIANT
+          [[ "$VERSION_CHANGE" = "patch" ]] && [[ "$RELEASE_VARIANT" = "no" ]] && yarn version --patch
+          [[ "$VERSION_CHANGE" = "minor" ]] && [[ "$RELEASE_VARIANT" != "no" ]] && yarn version --preminor --preid $RELEASE_VARIANT
+          [[ "$VERSION_CHANGE" = "minor" ]] && [[ "$RELEASE_VARIANT" = "no" ]] && yarn version --minor
+          [[ "$VERSION_CHANGE" = "major" ]] && [[ "$RELEASE_VARIANT" != "no" ]] && yarn version --premajor --preid $RELEASE_VARIANT
+          [[ "$VERSION_CHANGE" = "major" ]] && [[ "$RELEASE_VARIANT" = "no" ]] && yarn version --major
+          git add './'
+      - name: publish package
+        if: github.event.inputs.cNpmPublish == 'yes'
+        run: npm publish --verbose
+      - name: Push to github
+        run: |
+          git status
+          git pull --rebase -f
+          git push --verbose

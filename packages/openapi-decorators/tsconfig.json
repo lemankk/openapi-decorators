@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "checkJs": false,
+    "outDir": "./dist",
+    "jsx": "preserve",
+    "emitDecoratorMetadata": true,
+    "alwaysStrict": false,
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "target": "es6",
+    "lib": [
+      "esnext",
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "DOM"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "noEmitOnError": false,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "declarationDir": "./dist/types"
+  },
+  "include": [
+    "src",
+    "custom.d.ts"
+  ],
+  "exclude": ["types", "lib"]
+}
