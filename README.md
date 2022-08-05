@@ -1,1 +1,1 @@
-# openapi-decorators
+# openapi-schemas
