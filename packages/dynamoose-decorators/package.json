@@ -2,6 +2,7 @@
   "name": "@openapi-schemas/dynamoose-decorators",
   "version": "0.1.0",
   "license": "MIT",
+  "private": false,
   "description": "Dynamoose decorators for operating with class-validator-jsonschema",
   "main": "./dist/cjs/index",
   "module": "./dist/esm/index",

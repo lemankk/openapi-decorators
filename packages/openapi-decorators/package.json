@@ -2,6 +2,7 @@
   "name": "@openapi-schemas/openapi-decorators",
   "version": "0.1.0",
   "license": "MIT",
+  "private": false,
   "description": "Inspiried by routing-controllers, openapi3-ts, to create decorators only metadata for AWS APIGateway and lambda",
   "main": "./dist/cjs/index",
   "module": "./dist/esm/index",

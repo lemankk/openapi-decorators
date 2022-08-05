@@ -91,7 +91,7 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           echo "always-auth = true" >> .npmrc
-          yarn publish --registry=https://npm.pkg.github.com/
+          yarn publish --access public --registry=https://npm.pkg.github.com/
       - name: publish to registry(npmjs.com)
         if: github.event.inputs.cNpmPublish == 'yes'
         env:
@@ -99,7 +99,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
           echo "always-auth = true" >> .npmrc
-          yarn publish --registry=https://registry.npmjs.org/
+          yarn publish --access public --registry=https://registry.npmjs.org/
       - name: Push to github
         run: |
           git status
