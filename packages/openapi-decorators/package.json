@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "lint": "eslint ./src --ext .ts",
-    "compile":  "rollup -c",
+    "compile": "rollup -c",
     "prettier": "npx prettier --write ./src",
     "build": "npm-run-all prettier compile",
     "build:dev": "rollup -c --environment build:dev"
